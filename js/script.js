@@ -101,9 +101,11 @@ function setLastPlay() {
   lastWpm = last_wpm_number;
 
   localStorage.clear();
-    console.log(localStorage.getItem("todays_wpm"))
-    if(last_wpm_number > localStorage.getItem("todays_wpm")) {
+    console.log(getTodaysBest("wpm"))
+    if(last_wpm_number > getTodaysBest("wpm")) {
         console.log("Score getoppt!")
+        saveTodaysBest();
+        console.log(getTodaysBest("wpm"))
         todaysWpm.innerHTML = last_wpm_number;
     }
 
