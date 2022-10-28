@@ -1,12 +1,12 @@
 const typingText = document.querySelector(".typing-text p"),
-  inpField = document.querySelector(".wrapper .input-field"),
-  tryAgainBtn = document.querySelector(".content button"),
-  timeTag = document.querySelector(".time span b"),
-  mistakeTag = document.querySelector(".mistake span"),
-  wpmTag = document.querySelector(".wpm span"),
-  cpmTag = document.querySelector(".cpm span"),
-  gameFrame = document.querySelector("#game"),
-  resultFrame = document.querySelector("#scoreboard");
+inpField = document.querySelector(".wrapper .input-field"),
+tryAgainBtn = document.querySelector(".content button"),
+timeTag = document.querySelector(".time span b"),
+mistakeTag = document.querySelector(".mistake span"),
+wpmTag = document.querySelector(".wpm span"),
+cpmTag = document.querySelector(".cpm span"),
+gameFrame = document.querySelector("#game"),
+resultFrame = document.querySelector("#scoreboard");
 alltimeMistake = document.querySelector("#alltime_mistakes");
 alltimeWpm = document.querySelector("#alltime_wpm");
 alltimeCpm = document.querySelector("#alltime_cpm");
@@ -16,30 +16,35 @@ todaysCpm = document.querySelector("#today_cpm");
 lastMistake = document.querySelector("#last_mistakes");
 lastWpm = document.querySelector("#last_wpm");
 lastCpm = document.querySelector("#last_cpm");
+deleteToday = document.querySelector(".delete-today");
+deleteAlltime = document.querySelector(".delete-alltime");
 
 let timer,
-  maxTime = 60,
+  maxTime = 5,
   timeLeft = maxTime,
   charIndex = (mistakes = isTyping = 0);
 gamehasended = false;
 
 function saveTodaysBest() {
-  localStorage.setItem("todays_mistakes", mistakeTag.innerText);
-  document.querySelector('#today_mistakes').innerHTML = localStorage.getItem("todays_mistakes");
-    
   localStorage.setItem("todays_wpm", wpmTag.innerText);
-  lastWpm.innerHTML = localStorage.getItem("todays_wpm");
+  todaysWpm.innerHTML = localStorage.getItem("todays_wpm")
+
+  localStorage.setItem("todays_mistakes", mistakeTag.innerText);
+  todaysMistake.innerHTML = localStorage.getItem("todays_mistakes")
 
   localStorage.setItem("todays_cpm", cpmTag.innerText);
-  lastCpm.innerHTML = localStorage.getItem("todays_cpm");
-
-  reloadBest();
+  todaysCpm.innerHTML = localStorage.getItem("todays_cpm")
 }
 
 function saveAllTimesBest() {
   localStorage.setItem("alltimes_mistakes", mistakeTag.innerText);
+  alltimeMistake.innerHTML = localStorage.getItem("alltimes_mistakes")
+
   localStorage.setItem("alltimes_wpm", "" + wpmTag.innerText);
+  alltimeWpm.innerHTML = localStorage.getItem("alltimes_wpm")
+
   localStorage.setItem("alltimes_cpm", "" + cpmTag.innerText);
+  alltimeCpm.innerHTML = localStorage.getItem("alltimes_cpm")
 }
 
 function getTodaysBest(value) {
@@ -100,16 +105,25 @@ function setLastPlay() {
   last_wpm.innerHTML = last_wpm_number;
   lastWpm = last_wpm_number;
 
-  localStorage.clear();
-    console.log(getTodaysBest("wpm"))
-    if(last_wpm_number > getTodaysBest("wpm")) {
-        console.log("Score getoppt!")
-        saveTodaysBest();
-        console.log(getTodaysBest("wpm"))
-        todaysWpm.innerHTML = last_wpm_number;
-    }
+  console.log("TODAYSWPM: " + getTodaysBest("wpm"))
+  last_scored_wpm = parseInt(last_wpm_number);
+  todays_best_wpm = parseInt(getTodaysBest("wpm"));
+  alltime_best_wpm = parseInt(getAllTimesBest("wpm"));
+
+
+  if(last_scored_wpm > todays_best_wpm) {
+    saveTodaysBest();
+    console.log("Last = Höher als Today");
+  }
+
+  if(last_scored_wpm > alltime_best_wpm) {
+    saveAllTimesBest();
+    console.log("Last = Höher als Alltime");
+  }
+
 
 }
+// 
 
 function loadParagraph() {
   const ranIndex = Math.floor(Math.random() * paragraphs.length);
@@ -126,7 +140,7 @@ function loadParagraph() {
 function initTyping() {
   let characters = typingText.querySelectorAll("span");
   let typedChar = inpField.value.split("")[charIndex];
-  if (charIndex < characters.length - 1 && timeLeft > 0) {
+  if (charIndex < characters.length && timeLeft > 0) {
     if (!isTyping) {
       timer = setInterval(initTimer, 1000);
       isTyping = true;
@@ -149,7 +163,7 @@ function initTyping() {
       charIndex++;
     }
     characters.forEach((span) => span.classList.remove("active"));
-    characters[charIndex].classList.add("active");
+    // characters[charIndex].classList.add("active");
 
     let wpm = Math.round(
       ((charIndex - mistakes) / 5 / (maxTime - timeLeft)) * 60
@@ -162,6 +176,10 @@ function initTyping() {
   } else {
     clearInterval(timer);
     inpField.value = "";
+  }
+
+  if (charIndex == characters.length) {
+    console.log("Test")
   }
 }
 
@@ -178,20 +196,19 @@ function initTimer() {
       gameFrame.style.display = "none";
       resultFrame.style.display = "block";
 
-      if (lastWpm > "40") {
-        saveTodaysBest();
-        // return;
-      }
-      if (wpm.innerText > getAllTimesBest("wpm")) {
-        saveAllTimesBest();
-        reloadBest();
-        return;
-      }
     }
   } else {
     clearInterval(timer);
   }
 }
+
+deleteToday.addEventListener("click", (e) => {
+  console.log("Todays Best score is deleted")
+});
+
+deleteAlltime.addEventListener("click", (e) => {
+  console.log("Alltimes Best score is deleted")
+});
 
 function resetGame() {
   loadParagraph();
@@ -210,26 +227,40 @@ function toggleGame() {
     print;
     gameFrame.style.display = "none";
     resultFrame.style.display = "block";
-    if (wpm > getTodaysBest("wpm")) {
-      saveTodaysBest(mistakes, wpm, cpm);
-    }
-
-    if (wpm > getAllTimesBest("wpm")) {
-      saveAllTimesBest(mistakes, wpm, cpm);
-    }
-    console.log(localStorage.getItem("todays_mistakes"));
   } else {
     resultFrame.style.display = "none";
     loadParagraph();
   }
 }
-lastMistake = "0";
-lastWpm = "0";
-lastCpm = "0";
 
-localStorage.setItem("todays_mistakes", "0");
-localStorage.setItem("todays_wpm", "0");
-localStorage.setItem("todays_cpm", "0");
+function setupScores() {
+  console.log("AlltimeMistakes: " + localStorage.getItem("alltimes_mistakes"))
+  console.log("AlltimeWpm: " + localStorage.getItem("alltimes_wpm"))
+  console.log("AlltimeCpm: " + localStorage.getItem("alltimes_cpm"))
+  console.log("TodaysMistakes: " + localStorage.getItem("todays_mistakes"))
+  console.log("TodaysWpm: " + localStorage.getItem("todays_wpm"))
+  console.log("TodaysCpm: " + localStorage.getItem("todays_cpm"))
+
+  alltimeMistake.innerText = localStorage.getItem("alltimes_mistakes");
+  alltimeWpm.innerText = localStorage.getItem("alltimes_wpm");
+  alltimeCpm.innerText = localStorage.getItem("alltimes_cpm");
+
+  todaysMistake.innerText = localStorage.getItem("todays_mistakes")
+  todaysWpm.innerText = localStorage.getItem("todays_wpm")
+  todaysCpm.innerText = localStorage.getItem("todays_cpm")
+}
+
+setupScores();
+
+if(getTodaysBest("wpm") == null) {
+  localStorage.setItem("todays_mistakes", "0");
+  localStorage.setItem("todays_wpm", "0");
+  localStorage.setItem("todays_cpm", "0");
+}
+
+// lastMistake = "0";
+// lastWpm = "0";
+// lastCpm = "0";
 
 toggleGame();
 inpField.addEventListener("input", initTyping);
