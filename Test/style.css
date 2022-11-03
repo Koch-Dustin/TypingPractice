@@ -89,7 +89,7 @@ body{
   justify-content: space-between;
   border-top: 1px solid #bfbfbf;
 }
-.content button{
+.content button, .content-box button{
   outline: none;
   border: none;
   width: 105px;
@@ -101,7 +101,7 @@ body{
   background: #909090;
   transition: transform 0.3s ease;
 }
-.content button:active{
+.content button:active, .content-box button:active{
   transform: scale(0.97);
 }
 .content .result-details{

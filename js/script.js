@@ -123,7 +123,7 @@ function setLastPlay() {
 
 
 }
-// 
+// hallo
 
 function loadParagraph() {
   const ranIndex = Math.floor(Math.random() * paragraphs.length);
@@ -133,7 +133,7 @@ function loadParagraph() {
     typingText.innerHTML += span;
   });
   typingText.querySelectorAll("span")[0].classList.add("active");
-  document.addEventListener("keydown", () => inpField.focus());
+  // document.addEventListener("keydown", () => inpField.focus());
   typingText.addEventListener("click", () => inpField.focus());
 }
 
@@ -211,7 +211,7 @@ deleteAlltime.addEventListener("click", (e) => {
 });
 
 function resetGame() {
-  loadParagraph();
+  generateWords();
   clearInterval(timer);
   timeLeft = maxTime;
   charIndex = mistakes = isTyping = 0;
@@ -229,7 +229,7 @@ function toggleGame() {
     resultFrame.style.display = "block";
   } else {
     resultFrame.style.display = "none";
-    loadParagraph();
+    generateWords();
   }
 }
 
@@ -259,8 +259,30 @@ if(getTodaysBest("wpm") == null) {
 }
 
 // lastMistake = "0";
-// lastWpm = "0";
+// lastWpm = "0";'
 // lastCpm = "0";
+
+function generateWords() {
+
+  const ranIndex = Math.floor(Math.random() * typingText.innerHTML.length);
+  typingText.innerHTML = "";
+  paragraphs[ranIndex].split("").forEach((char) => {
+    let span = `<span>${char}</span>`;
+    typingText.innerHTML += span;
+  });
+  typingText.querySelectorAll("span")[0].classList.add("active");
+  // document.addEventListener("keydown", () => inpField.focus());
+  typingText.addEventListener("click", () => inpField.focus());
+
+
+
+  fetch('https://random-word-api.herokuapp.com/word?number=' + document.getElementById('word_count').value)
+    .then(res => res.json())
+    .then(data => output = data.toString().replaceAll(",", " "))
+    .then(output => typingText.innerHTML = output)
+
+
+}
 
 toggleGame();
 inpField.addEventListener("input", initTyping);
