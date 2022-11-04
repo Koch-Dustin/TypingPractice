@@ -12,9 +12,9 @@
       <input type="text" class="input-field" />
       <div class="content-box">
         <input type="number" placeholder="Generated Words" id="word_count" max="25" onKeyDown="return false">
-        <button onclick="generateWords()" >Generate</button>
+        <button onclick="generateWords(), buttonPressed()" >Generate</button>
         <div class="typing-text">
-          <p></p>
+          <p id="paragraph"></p>
         </div>
         <div class="content">
           <ul class="result-details">
@@ -72,7 +72,6 @@
       </div>
     </div>
 
-    <script src="../js/paragraphs.js"></script>
     <script src="../js/script.js"></script>
   </body>
 </html>

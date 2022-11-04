@@ -18,6 +18,7 @@ lastWpm = document.querySelector("#last_wpm");
 lastCpm = document.querySelector("#last_cpm");
 deleteToday = document.querySelector(".delete-today");
 deleteAlltime = document.querySelector(".delete-alltime");
+paragraph = document.querySelector('#paragraph');
 
 let timer,
   maxTime = 5,
@@ -137,51 +138,7 @@ function loadParagraph() {
   typingText.addEventListener("click", () => inpField.focus());
 }
 
-function initTyping() {
-  let characters = typingText.querySelectorAll("span");
-  let typedChar = inpField.value.split("")[charIndex];
-  if (charIndex < characters.length && timeLeft > 0) {
-    if (!isTyping) {
-      timer = setInterval(initTimer, 1000);
-      isTyping = true;
-    }
-    if (typedChar == null) {
-      if (charIndex > 0) {
-        charIndex--;
-        if (characters[charIndex].classList.contains("incorrect")) {
-          mistakes--;
-        }
-        characters[charIndex].classList.remove("correct", "incorrect");
-      }
-    } else {
-      if (characters[charIndex].innerText == typedChar) {
-        characters[charIndex].classList.add("correct");
-      } else {
-        mistakes++;
-        characters[charIndex].classList.add("incorrect");
-      }
-      charIndex++;
-    }
-    characters.forEach((span) => span.classList.remove("active"));
-    // characters[charIndex].classList.add("active");
 
-    let wpm = Math.round(
-      ((charIndex - mistakes) / 5 / (maxTime - timeLeft)) * 60
-    );
-    wpm = wpm < 0 || !wpm || wpm === Infinity ? 0 : wpm;
-
-    wpmTag.innerText = wpm;
-    mistakeTag.innerText = mistakes;
-    cpmTag.innerText = charIndex - mistakes;
-  } else {
-    clearInterval(timer);
-    inpField.value = "";
-  }
-
-  if (charIndex == characters.length) {
-    console.log("Test")
-  }
-}
 
 function initTimer() {
   if (timeLeft > 0) {
@@ -258,32 +215,23 @@ if(getTodaysBest("wpm") == null) {
   localStorage.setItem("todays_cpm", "0");
 }
 
-// lastMistake = "0";
-// lastWpm = "0";'
-// lastCpm = "0";
-
-function generateWords() {
-
-  const ranIndex = Math.floor(Math.random() * typingText.innerHTML.length);
-  typingText.innerHTML = "";
-  paragraphs[ranIndex].split("").forEach((char) => {
-    let span = `<span>${char}</span>`;
-    typingText.innerHTML += span;
-  });
-  typingText.querySelectorAll("span")[0].classList.add("active");
-  // document.addEventListener("keydown", () => inpField.focus());
-  typingText.addEventListener("click", () => inpField.focus());
-
-
-
+async function generateWords() {
   fetch('https://random-word-api.herokuapp.com/word?number=' + document.getElementById('word_count').value)
     .then(res => res.json())
     .then(data => output = data.toString().replaceAll(",", " "))
     .then(output => typingText.innerHTML = output)
+  typingText.focus();
+}
 
+function buttonPressed() {
+  setTimeout(() => { splitWords(); }, 750)
+}
 
+function splitWords() {
+  let text = typingText.innerHTML;
+  const myArray = text.split("");
+  console.log(myArray);
 }
 
 toggleGame();
-inpField.addEventListener("input", initTyping);
 tryAgainBtn.addEventListener("click", resetGame);
