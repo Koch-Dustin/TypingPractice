@@ -134,11 +134,9 @@ function loadParagraph() {
     typingText.innerHTML += span;
   });
   typingText.querySelectorAll("span")[0].classList.add("active");
-  // document.addEventListener("keydown", () => inpField.focus());
+  document.addEventListener("keydown", () => inpField.focus());
   typingText.addEventListener("click", () => inpField.focus());
 }
-
-
 
 function initTimer() {
   if (timeLeft > 0) {
@@ -227,11 +225,17 @@ function buttonPressed() {
   setTimeout(() => { splitWords(); }, 750)
 }
 
+let myArray
+
 function splitWords() {
   let text = typingText.innerHTML;
-  const myArray = text.split("");
+  myArray = text.split("");
   console.log(myArray);
 }
+
+// Spieler tippt = Abfrage ob der Getippte buchstabe der gleiche ist wie in der nächsten
+// stelle im Array wo der Text in einzelnen Chars abgespeichert wird.
+
 
 toggleGame();
 tryAgainBtn.addEventListener("click", resetGame);
