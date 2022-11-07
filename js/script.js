@@ -240,20 +240,43 @@ function splitWords() {
 function Typing() {
   const characters = typingText.innerText;
   const characters2 = document.getElementsByClassName('test')
+  const numberOfWritenCharacters = document.getElementsByClassName('typed').length;
   let typedChar = inpField.value.split("")[charIndex];
   const character = characters[charIndex];
   const list = characters2[charIndex].classList;
   console.log("Char to type: " + characters[charIndex + 1])
 
+  // if(typedChar == undefined) {
+  //   alert("Kein Backspace")
+  // }
+
+  console.log(characters.length)
+  console.log(numberOfWritenCharacters)
+
+  if(numberOfWritenCharacters + 1 == characters.length) {
+    console.log("Stop")
+  }
+
   if(character === typedChar) {
     console.log("correct")
+    list.remove("active")
     list.add('correct');
+    list.add('typed')
   }else {
     console.log("incorrect")
+    list.remove("active")
     list.add('incorrect');
+    list.add('typed')
   }
   charIndex++;
+
 }
+
+document.addEventListener('keydown', function(e) {
+  if(e.keyCode == 8) {
+    e.preventDefault();
+  }
+});
 
 // stelle im Array wo der Text in einzelnen Chars abgespeichert wird.
 
