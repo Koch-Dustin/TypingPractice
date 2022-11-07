@@ -18,19 +18,19 @@ body{
   color: #fff;
   background: #909090;
 }
-.wrapper{
+.design-of-game-boxes{
   width: 770px;
   padding: 35px;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 10px 15px rgba(0,0,0,0.05);
 }
-.wrapper .input-field{
+.design-of-game-boxes .input-field{
   opacity: 0;
   z-index: -999;
   position: absolute;
 }
-.wrapper .content-box{
+.design-of-game-boxes .content-box{
   padding: 13px 20px 0;
   border-radius: 10px;
   border: 1px solid #bfbfbf;
@@ -137,7 +137,7 @@ li:not(:first-child) span{
   font-weight: 500;
 }
 @media (max-width: 745px) {
-  .wrapper{
+  .design-of-game-boxes{
     padding: 20px;
   }
   .content-box .content{
@@ -169,7 +169,7 @@ li:not(:first-child) span{
   }
 }
 @media (max-width: 518px) {
-  .wrapper .content-box{
+  .design-of-game-boxes .content-box{
     padding: 10px 15px 0;
   }
   .typing-text p{
