@@ -162,14 +162,14 @@ li:not(:first-child) span {
   font-weight: 500;
 }
 
-#scoreboard {
+.scoreboard {
   width: 745px;
   height: auto;
   text-align: center;
   font-size: 18px;
 }
 
-#scoreboard button {
+.scoreboard button {
   outline: none;
   border: none;
   width: 205px;
@@ -182,7 +182,7 @@ li:not(:first-child) span {
   transition: transform 0.3s ease;
 }
 
-#scoreboard button:active {
+.scoreboard button:active {
   transform: scale(0.97);
 }
 
@@ -203,12 +203,12 @@ li:not(:first-child) span {
   border-radius: 5px;
 }
 
-#left {
+.left {
   float: left;
   margin-right: 17px;    
 }
 
-#right {
+.right {
   float: right;
   margin-left: 17px;
 }
