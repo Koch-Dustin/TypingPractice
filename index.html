@@ -10,11 +10,11 @@
   <body>
     <div class="design-of-game-boxes" id="game">
       <input type="text" class="input-field" />
-      <div class="content-box">
-        <input type="number" placeholder="Generated Words" id="word_count" max="40" onKeyDown="return false">
-        <button onclick="generateWords()" >Generate</button>
+      <div class="typing-practice-game-div">
+        <input type="number" placeholder="Generated Words" id="word-count" max="40" onKeyDown="return false">
+        <button onclick="generateWords()">Generate</button>
         <div class="typing-text">
-          <p id="paragraph"></p>
+          <p id="text-to-write"></p>
         </div>
         <div class="content">
           <ul class="result-details">
@@ -41,7 +41,7 @@
     </div>
 
     <div class="design-of-game-boxes" id="scoreboard">
-      <div class="content-box">
+      <div class="score-container">
         <p>Time is up!</p>
         <br />
         <p>Your Total Best</p>
