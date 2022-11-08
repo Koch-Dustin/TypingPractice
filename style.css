@@ -169,7 +169,7 @@ li:not(:first-child) span {
   font-size: 18px;
 }
 
-.scoreboard button {
+.score-container button {
   outline: none;
   border: none;
   width: 205px;
@@ -219,4 +219,9 @@ li:not(:first-child) span {
 
 .incorrect {
   color: red;
+}
+
+.score-container {
+  display: flexbox;
+  text-align: center;
 }
