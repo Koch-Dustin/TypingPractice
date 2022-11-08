@@ -11,30 +11,13 @@
     <div class="design-of-game-boxes" id="game">
       <input type="text" class="input-field" />
       <div class="typing-practice-game-div">
-        <input type="number" placeholder="Generated Words" id="word-count" max="40" onKeyDown="return false">
+        <input type="number" placeholder="Generated Words"class="word-count" id="word-count" min="5" max="40" onKeyDown="return false">
         <button onclick="generateWords()">Generate</button>
         <div class="typing-text">
           <p id="text-to-write"></p>
         </div>
         <div class="content">
-          <ul class="result-details">
-            <li class="time">
-              <p>Time Left:</p>
-              <span><b>60</b>s</span>
-            </li>
-            <li class="mistake">
-              <p>Mistakes:</p>
-              <span>0</span>
-            </li>
-            <li class="wpm">
-              <p>WPM:</p>
-              <span>0</span>
-            </li>
-            <li class="cpm">
-              <p>CPM:</p>
-              <span>0</span>
-            </li>
-          </ul>
+          <p>TypingPractice Game by Dustin Koch</p>
           <button>Try Again</button>
         </div>
       </div>
@@ -49,6 +32,7 @@
           <div class="left">Mistakes: <span id="alltime_mistakes">0</span></div>
           <div>WPM: <span id="alltime_wpm">0</span></div>
           <div class="right">CPM: <span id="alltime_cpm">0</span></div>
+          <div class="">Time: <span id="alltime_time">0</span></div>
         </div>
         <br />
         <p>Your todays Best</p>
@@ -56,6 +40,7 @@
           <div class="left">Mistakes <span id="today_mistakes">0</span></div>
           <div>WPM: <span id="today_wpm">0</span></div>
           <div class="right">CPM: <span id="today_cpm">0</span></div>
+          <div class="">Time: <span id="today_time">0</span></div>
         </div>
         <br />
         <p>Your last play</p>
@@ -63,6 +48,7 @@
           <div class="left">Mistakes: <span id="last_mistakes">0</span></div>
           <div>WPM: <span id="last_wpm">0</span></div>
           <div class="right">CPM: <span id="last_cpm">0</span></div>
+          <div class="">Time: <span id="last_time">0</span></div>
         </div>
         <br>
         <p>The best score gets selected by the highest CPM</p>

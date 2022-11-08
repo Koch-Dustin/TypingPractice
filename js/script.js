@@ -16,14 +16,22 @@ todaysCpm = document.querySelector("#today_cpm");
 lastMistake = document.querySelector("#last_mistakes");
 lastWpm = document.querySelector("#last_wpm");
 lastCpm = document.querySelector("#last_cpm");
+lastTime = document.querySelector("#last_time")
 deleteToday = document.querySelector(".delete-today");
 deleteAlltime = document.querySelector(".delete-alltime");
 
+var intervalId;
+let TimeSpendToFinish
+let cpm
+let netwpm
+let groswpm
+let mistakes
+
 let timer,
-  maxTime = 5,
-  timeLeft = maxTime,
+  timeSpend = 0
   charIndex = (mistakes = isTyping = 0);
 gamehasended = false;
+firstCharacterTyped = false;
 
 function saveTodaysBest() {
   localStorage.setItem("todays_wpm", wpmTag.innerText);
@@ -34,6 +42,8 @@ function saveTodaysBest() {
 
   localStorage.setItem("todays_cpm", cpmTag.innerText);
   todaysCpm.innerHTML = localStorage.getItem("todays_cpm")
+
+  localStorage.setItem("todays_time", )
 }
 
 function saveAllTimesBest() {
@@ -90,40 +100,18 @@ function reloadBest() {
 }
 
 function setLastPlay() {
-  last_mistakes_number = mistakeTag.innerHTML;
-  last_mistakes = document.querySelector("#last_mistakes");
-  last_mistakes.innerHTML = last_mistakes_number;
-  lastMistake = last_mistakes_number;
+  lastMistake.innerText = mistakes
 
-  last_cpm_number = cpmTag.innerHTML;
-  last_cpm = document.querySelector("#last_cpm");
-  last_cpm.innerHTML = last_cpm_number;
-  lastCpm = last_cpm_number;
+  lastCpm.innerText = Math.round(cpm)
 
-  last_wpm_number = wpmTag.innerHTML;
-  last_wpm = document.querySelector("#last_wpm");
-  last_wpm.innerHTML = last_wpm_number;
-  lastWpm = last_wpm_number;
+  lastWpm.innerText = netwpm
 
-  console.log("TODAYSWPM: " + getTodaysBest("wpm"))
-  last_scored_wpm = parseInt(last_wpm_number);
-  todays_best_wpm = parseInt(getTodaysBest("wpm"));
-  alltime_best_wpm = parseInt(getAllTimesBest("wpm"));
+  lastTime.innerText = TimeSpendToFinish
 
 
-  if(last_scored_wpm > todays_best_wpm) {
-    saveTodaysBest();
-    console.log("Last = Höher als Today");
-  }
-
-  if(last_scored_wpm > alltime_best_wpm) {
-    saveAllTimesBest();
-    console.log("Last = Höher als Alltime");
-  }
-
+  console.log()
 
 }
-// hallo
 
 function loadParagraph() {
   const ranIndex = Math.floor(Math.random() * paragraphs.length);
@@ -138,22 +126,14 @@ function loadParagraph() {
 }
 
 function initTimer() {
-  if (timeLeft > 0) {
-    timeLeft--;
-    timeTag.innerText = timeLeft;
-    let wpm = Math.round(
-      ((charIndex - mistakes) / 5 / (maxTime - timeLeft)) * 60
-    );
-    wpmTag.innerText = wpm;
-    if (timeLeft == 0) {
-      setLastPlay();
-      gameFrame.style.display = "none";
-      resultFrame.style.display = "block";
+  const characters = typingText.innerText;
+  const numberOfWritenCharacters = document.getElementsByClassName('typed').length + 1;
 
-    }
-  } else {
-    clearInterval(timer);
-  }
+
+  // while ((numberOfWritenCharacters) != characters.length) {
+  //   console.log("awdiohjawdhoiawoihdawiohd")
+  // }
+
 }
 
 deleteToday.addEventListener("click", (e) => {
@@ -220,6 +200,11 @@ async function generateWords() {
     .then(output => typingText.innerHTML = output)
     .then(() => splitWords())
   typingText.focus();
+  
+  clearInterval(intervalId)
+  timeSpend = 0
+  firstCharacterTyped = false
+
 }
 
 let myArray
@@ -235,7 +220,6 @@ function splitWords() {
   console.log(myArray);
 }
 
-// Spieler tippt = Abfrage ob der Getippte buchstabe der gleiche ist wie in der nächsten
 function Typing() {
   const characters = typingText.innerText;
   const characters2 = document.getElementsByClassName('test')
@@ -243,20 +227,50 @@ function Typing() {
   let typedChar = inpField.value.split("")[charIndex];
   const character = characters[charIndex];
   const list = characters2[charIndex].classList;
-  console.log("Char to type: " + characters[charIndex + 1])
 
-  // if(typedChar == undefined) {
-  //   alert("Kein Backspace")
-  // }
-
-  console.log(characters.length)
-  console.log(numberOfWritenCharacters)
-
-  if(numberOfWritenCharacters + 1 == characters.length) {
-    console.log("Stop")
+  if (firstCharacterTyped == false) {
+    firstCharacterTyped = true;
+    intervalId = window.setInterval(function() {
+        timeSpend++;
+    }, 1000);
   }
 
+  if(numberOfWritenCharacters + 1 == characters.length) {
+    document.addEventListener('keydown', (e) => {
+      e.preventDefault();
+    })
+
+    gamehasended =  true
+    toggleGame()
+    
+    clearInterval(intervalId)
+
+    TimeSpendToFinish = timeSpend;
+    TimeSpendToFinishInMinutes = (TimeSpendToFinish / 60)
+    console.log(TimeSpendToFinishInMinutes)
+    cpm = (numberOfWritenCharacters / timeSpend) * 60
+    netwpm = Math.round((numberOfWritenCharacters - mistakes) * TimeSpendToFinishInMinutes)
+    netwpm = Math.round()
+    groswpm = Math.round(numberOfWritenCharacters / TimeSpendToFinishInMinutes)
+
+    setLastPlay()
+    timeSpend = 0
+    firstCharacterTyped = false
+
+    acc = (netwpm / groswpm) * 100
+    console.log("t" + TimeSpendToFinish)
+    console.log(TimeSpendToFinishInMinutes)
+    console.log(netwpm)
+    console.log(groswpm)
+    console.log(netwpm / groswpm)
+    console.log("acc: " + acc)
+  }
+
+  CurrentWord = 1
   if(character === typedChar) {
+    if(typedChar == " ") {
+      CurrentWord++
+    }
     console.log("correct")
     list.remove("active")
     list.add('correct');
@@ -266,6 +280,7 @@ function Typing() {
     list.remove("active")
     list.add('incorrect');
     list.add('typed')
+    mistakes++;
   }
   charIndex++;
 
@@ -282,3 +297,9 @@ document.addEventListener('keydown', function(e) {
 toggleGame();
 tryAgainBtn.addEventListener("click", resetGame);
 inpField.addEventListener("input", Typing);
+
+
+
+// Formel
+
+// woerter geschrieben (nicht generiert)
