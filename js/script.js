@@ -1,5 +1,5 @@
 const typingText = document.querySelector(".typing-text p"),
-inpField = document.querySelector(".wrapper .input-field"),
+inpField = document.querySelector(".design-of-game-boxes .input-field"),
 tryAgainBtn = document.querySelector(".content button"),
 timeTag = document.querySelector(".time span b"),
 mistakeTag = document.querySelector(".mistake span"),
@@ -18,7 +18,6 @@ lastWpm = document.querySelector("#last_wpm");
 lastCpm = document.querySelector("#last_cpm");
 deleteToday = document.querySelector(".delete-today");
 deleteAlltime = document.querySelector(".delete-alltime");
-paragraph = document.querySelector('#paragraph');
 
 let timer,
   maxTime = 5,
@@ -215,7 +214,7 @@ if(getTodaysBest("wpm") == null) {
 }
 
 async function generateWords() {
-  fetch('https://random-word-api.herokuapp.com/word?number=' + document.getElementById('word_count').value)
+  fetch('https://random-word-api.herokuapp.com/word?number=' + document.getElementById('word-count').value)
     .then(res => res.json())
     .then(data => output = data.toString().replaceAll(",", " "))
     .then(output => typingText.innerHTML = output)
@@ -282,4 +281,4 @@ document.addEventListener('keydown', function(e) {
 
 toggleGame();
 tryAgainBtn.addEventListener("click", resetGame);
-inpField.addEventListener("input", Typing)
+inpField.addEventListener("input", Typing);
