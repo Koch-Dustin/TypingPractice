@@ -222,11 +222,11 @@ function splitWords() {
 
 function Typing() {
   const characters = typingText.innerText;
-  const characters2 = document.getElementsByClassName('test')
+  const typedCharactersNumber = document.getElementsByClassName('test')
   const numberOfWritenCharacters = document.getElementsByClassName('typed').length;
   let typedChar = inpField.value.split("")[charIndex];
   const character = characters[charIndex];
-  const list = characters2[charIndex].classList;
+  const list = typedCharactersNumber[charIndex].classList;
 
   if (firstCharacterTyped == false) {
     firstCharacterTyped = true;
@@ -239,7 +239,7 @@ function Typing() {
     document.addEventListener('keydown', (e) => {
       e.preventDefault();
     })
-
+    
     gamehasended =  true
     toggleGame()
     
@@ -257,19 +257,23 @@ function Typing() {
     timeSpend = 0
     firstCharacterTyped = false
 
-    acc = (netwpm / groswpm) * 100
-    console.log("t" + TimeSpendToFinish)
-    console.log(TimeSpendToFinishInMinutes)
-    console.log(netwpm)
-    console.log(groswpm)
-    console.log(netwpm / groswpm)
-    console.log("acc: " + acc)
+    groswpm = Math.round(((typedCharactersNumber.length / 5) / TimeSpendToFinish) * 60)
+    netwpm = Math.round(groswpm - (mistakes / (TimeSpendToFinish / 60)))
+    console.log("GrossWpm: " + groswpm)
+    console.log("NetWpm: " + netwpm)
+
+    // acc = (netwpm / groswpm) * 100
+    // console.log("t" + TimeSpendToFinish)
+    // console.log(TimeSpendToFinishInMinutes)
+    // console.log(netwpm)
+    // console.log(groswpm)
+    // console.log(netwpm / groswpm)
+    // console.log("acc: " + acc)
   }
 
-  CurrentWord = 1
   if(character === typedChar) {
     if(typedChar == " ") {
-      CurrentWord++
+      
     }
     console.log("correct")
     list.remove("active")
@@ -281,9 +285,9 @@ function Typing() {
     list.add('incorrect');
     list.add('typed')
     mistakes++;
+    
   }
   charIndex++;
-
 }
 
 document.addEventListener('keydown', function(e) {
@@ -296,10 +300,63 @@ document.addEventListener('keydown', function(e) {
 
 toggleGame();
 tryAgainBtn.addEventListener("click", resetGame);
-inpField.addEventListener("input", Typing);
+inpField.addEventListener("input", Typing, calculateAcc);
 
 
 
-// Formel
 
-// woerter geschrieben (nicht generiert)
+function calculateAcc() {
+// globale variablen
+  const characters = typingText.innerText;
+  const typedCharactersNumber = document.getElementsByClassName('test')
+  const numberOfWritenCharacters = document.getElementsByClassName('typed').length;
+  let typedChar = inpField.value.split("")[charIndex];
+  const character = characters[charIndex];
+  const list = typedCharactersNumber[charIndex].classList;
+  let neededCharacter = inpField.value[charIndex - 1]
+
+// correctWordCount
+  var correctWordCount
+// wordCount
+  var wordCount
+// currentWordIsCorrect
+  var currentWordIsCorrect 
+// correctCharacter
+  var correctCharacter
+
+
+// in event listener
+
+  if(character === typedChar) {
+    correctCharacter++
+    if( typedChar == " ") {
+      wordCount++
+      if(currentWordIsCorrect) {
+        correctWordCount++
+        currentWordCount ++
+      }else {
+        currentWordIsCorrect = true
+      }
+    }
+  }else {
+    if(neededCharacter == " ") {
+      wordCount++
+    }
+
+  }
+
+  console.log(correctWordCount)
+  console.log(correctWordCount)
+  console.log(currentWordIsCorrect)
+
+  // increase correctCharacter
+  // is character a space
+    // increase wordCount
+    // is word correct
+      // increase currentWordCount
+    // else 
+      // set currentWordIsCorrect to true
+// else
+  // should character be space
+    // increase wordCount
+}

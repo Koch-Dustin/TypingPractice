@@ -205,16 +205,6 @@ li:not(:first-child) span {
   margin-right: 5px;
 }
 
-/* .left {
-  float: left;
-  margin-right: 17px;    
-}
-
-.right {
-  float: right;
-  margin-left: 17px;
-} */
-
 .correct {
   color: green;
 }
