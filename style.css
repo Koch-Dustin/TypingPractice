@@ -36,13 +36,13 @@ body {
   position: absolute;
 }
 
-.design-of-game-boxes .typing-practice-game-div, .design-of-game-boxes .score-container {
+.design-of-game-boxes .typing-practice-game-container, .design-of-game-boxes .score-container {
   padding: 13px 20px 0;
   border-radius: 10px;
   border: 1px solid #bfbfbf;
 }
 
-.typing-practice-game-div .typing-text {
+.typing-practice-game-container .typing-text {
   overflow: hidden;
   max-height: 256px;
 }
@@ -96,7 +96,7 @@ body {
   }
 }
 
-.typing-practice-game-div .content, .score-container .content {
+.typing-practice-game-container .content, .score-container .content {
   margin-top: 17px;
   display: flex;
   padding: 12px 0;
@@ -106,7 +106,7 @@ body {
   border-top: 1px solid #bfbfbf;
 }
 
-.content button, .typing-practice-game-div button, .score-container button {
+.content button, .typing-practice-game-container button, .score-container button {
   outline: none;
   border: none;
   width: 105px;
@@ -119,7 +119,7 @@ body {
   transition: transform 0.3s ease;
 }
 
-.content button:active, .typing-practice-game-div button:active {
+.content button:active, .typing-practice-game-container button:active {
   transform: scale(0.97);
 }
 
