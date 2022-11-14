@@ -57,7 +57,6 @@ deleteAlltime.addEventListener("click", (e) => {
 function resetGame() {
   generateWords();
   clearInterval(timer);
-  timeLeft = maxTime;
   charIndex = mistakes = isTyping = 0;
   inpField.value = "";
   timeTag.innerText = timeLeft;
@@ -112,6 +111,7 @@ function Typing() {
   let typedChar = inpField.value.split("")[charIndex];
   const character = characters[charIndex];
   const list = typedCharactersNumber[charIndex].classList;
+  const numberOfCorrectCharacters = document.getElementsByClassName('correct').length;
 
   if (firstCharacterTyped == false) {
     firstCharacterTyped = true;
@@ -120,46 +120,64 @@ function Typing() {
     }, 1000);
   }
 
-  if(numberOfWritenCharacters + 1 == characters.length) {
-    document.addEventListener('keydown', (e) => {
-      e.preventDefault();
-    })
-    
-    gamehasended =  true
-    toggleGame()
-    
-    clearInterval(intervalId)
-
-    TimeSpendToFinish = timeSpend;
-    TimeSpendToFinishInMinutes = (TimeSpendToFinish / 60)
-    console.log(TimeSpendToFinishInMinutes)
-    cpm = (numberOfWritenCharacters / timeSpend) * 60
-
-    timeSpend = 0
-    firstCharacterTyped = false
-
-    groswpm = Math.round(((typedCharactersNumber.length / 5) / TimeSpendToFinish) * 60)
-    netwpm = Math.round(groswpm - (mistakes / (TimeSpendToFinish / 60)))
-    acc = (netwpm / groswpm) * 100
-    console.log("GrossWpm: " + groswpm)
-    console.log("NetWpm: " + netwpm)
-    console.log("Acc: " + acc)
-  }
-
   if(character === typedChar) {
-    console.log("correct")
+    if(typedChar == " ") {
+      list.remove("active")
+      list.add('correct');
+      list.add('typed')
+    }
     list.remove("active")
     list.add('correct');
     list.add('typed')
   }else {
-    console.log("incorrect")
     list.remove("active")
     list.add('incorrect');
     list.add('typed')
     mistakes++;
     
   }
+
   charIndex++;
+  if(numberOfWritenCharacters + 1 == characters.length) {
+
+    TimeSpendToFinish = timeSpend;
+    TimeSpendToFinishInMinutes = (TimeSpendToFinish / 60)
+    cpm = (numberOfWritenCharacters / timeSpend) * 60
+    groswpm = Math.round(((typedCharactersNumber.length / 5) / TimeSpendToFinish) * 60)
+    testwpm = Math.round(((numberOfCorrectCharacters / 5) / TimeSpendToFinish) * 60)
+    netwpm = Math.round(groswpm - mistakes / (TimeSpendToFinish / 60) + 1)
+    acc = (testwpm / groswpm) * 100
+    console.log("GrossWpm: " + groswpm)
+    console.log("NetWpm: " + testwpm)
+    console.log("Acc: " + acc)
+    console.log("Mistakes: " + mistakes)
+    
+    document.addEventListener('keydown', (e) => {
+      e.preventDefault();
+    })
+    
+    gamehasended =  true
+    toggleGame()
+    setLastPlay()
+    
+    clearInterval(intervalId)
+
+    timeSpend = 0
+    firstCharacterTyped = false
+
+    
+  }else {
+    let test2
+    let test
+    if(numberOfWritenCharacters < characters) {
+      test = typedCharactersNumber[charIndex ]
+      test2 = test.classList
+      test2.add('active')
+    }else {
+      console.log("Test")
+    }
+    
+  }
 }
 
 document.addEventListener('keydown', function(e) {
@@ -168,59 +186,9 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// stelle im Array wo der Text in einzelnen Chars abgespeichert wird.
-
 toggleGame();
 tryAgainBtn.addEventListener("click", resetGame);
-inpField.addEventListener("input", Typing, calculateAcc);
-
-
-
-
-function calculateAcc() {
-// globale variablen
-  const characters = typingText.innerText;
-  const typedCharactersNumber = document.getElementsByClassName('test')
-  const numberOfWritenCharacters = document.getElementsByClassName('typed').length;
-  let typedChar = inpField.value.split("")[charIndex];
-  const character = characters[charIndex];
-  const list = typedCharactersNumber[charIndex].classList;
-  let neededCharacter = inpField.value[charIndex - 1]
-
-// correctWordCount
-  var correctWordCount
-// wordCount
-  var wordCount
-// currentWordIsCorrect
-  var currentWordIsCorrect 
-// correctCharacter
-  var correctCharacter
-
-
-// in event listener
-
-  if(character === typedChar) {
-    correctCharacter++
-    if( typedChar == " ") {
-      wordCount++
-      if(currentWordIsCorrect) {
-        correctWordCount++
-        currentWordCount ++
-      }else {
-        currentWordIsCorrect = true
-      }
-    }
-  }else {
-    if(neededCharacter == " ") {
-      wordCount++
-    }
-
-  }
-
-  console.log(correctWordCount)
-  console.log(correctWordCount)
-  console.log(currentWordIsCorrect)
-}
+inpField.addEventListener("input", Typing);
 
 //=================================================
 // 
@@ -242,16 +210,19 @@ alltimeBestScore = "alltime-best-score"
 
 function setUpScores() {
   if(localStorage.getItem(todaysBestWpm == null)) {
-    localStorage.setItem(todaysBestWpm = "0")
-    localStorage.setItem(todaysBestCpm) = "0"
-    localStorage.setItem(todaysBestAcc = "0")
-    localStorage.setItem(todaysBestMistakes = "0")
+    localStorage.setItem(todaysBestWpm = 0)
+    localStorage.setItem(todaysBestCpm = 0)
+    localStorage.setItem(todaysBestAcc = 0)
+    localStorage.setItem(todaysBestMistakes = 0)
+    localStorage.setItem(todaysBestScore = 0)
   }
+
   if(localStorage.getItem(alltimeBestWpm == null)) {
-    localStorage.setItem(alltimeBestWpm = "0")
-    localStorage.setItem(alltimeBestCpm = "0")
-    localStorage.setItem(alltimeBestAcc = "0")
-    localStorage.setItem(alltimeBestMistakes = "0")
+    localStorage.setItem(alltimeBestWpm = 0)
+    localStorage.setItem(alltimeBestCpm = 0)
+    localStorage.setItem(alltimeBestAcc = 0)
+    localStorage.setItem(alltimeBestMistakes = 0)
+    localStorage.setItem(alltimeBestScore = 0)
   }
 }
 
@@ -259,7 +230,7 @@ function setLastPlay() {
 
   score = netwpm + acc
 
-  lastPlayIsBetterThanTodaysBest = score
+  lastPlayIsBetterThanTodaysBest = score > getScore(todaysBestScore)
   if(lastPlayIsBetterThanTodaysBest) {
     localStorage.setItem(todaysBestWpm, netwpm)
     localStorage.setItem(todaysBestCpm, cpm)
@@ -268,16 +239,31 @@ function setLastPlay() {
     localStorage.setItem(todaysBestScore, score)
   }
 
-  lastPlayIsBetterThanAlltimesBest
+  lastPlayIsBetterThanAlltimesBest = score > getScore(alltimeBestScore)
   if(lastPlayIsBetterThanAlltimesBest) {
     localStorage.setItem(alltimeBestWpm, netwpm)
     localStorage.setItem(alltimeBestCpm, cpm)
     localStorage.setItem(alltimeBestAcc, acc)
     localStorage.setItem(alltimeBestMistakes, mistakes)
     localStorage.setItem(alltimeBestScore, score)
-  }  
+  }
+
+  if(! lastPlayIsBetterThanTodaysBest || lastPlayIsBetterThanAlltimesBest) {
+    console.log("Test")
+  }
+  console.log(score)
 }
 
-function getScores() {
+function updateScore(scoreTypeToUpdate) {
+  if(scoreTypeToUpdate == "today") {
 
+  }
+
+  if(scoreTypeToUpdate == "alltime") {
+    
+  }
+}
+
+function getScore(typeOfBestScore) {
+  return localStorage.getItem(typeOfBestScore);
 }

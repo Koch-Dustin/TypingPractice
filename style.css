@@ -205,14 +205,6 @@ li:not(:first-child) span {
   margin-right: 5px;
 }
 
-.correct {
-  color: green;
-}
-
-.incorrect {
-  color: red;
-}
-
 .score-container {
   display: flexbox;
   text-align: center;
