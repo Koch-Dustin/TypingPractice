@@ -26,6 +26,7 @@ const typingText = document.querySelector(".typing-text p"),
   lastAcc = document.querySelector("#last_acc");
 (deleteToday = document.querySelector(".delete-today")),
   (deleteAlltime = document.querySelector(".delete-alltime"));
+  playAgainButton = document.querySelector(".play-again")
 
 var intervalId;
 let TimeSpendToFinish;
@@ -60,6 +61,10 @@ deleteToday.addEventListener("click", (e) => {
 deleteAlltime.addEventListener("click", (e) => {
   clearAlltimeBest()
 });
+
+playAgainButton.addEventListener("click", () => {
+  location.reload();
+})
 
 function resetGame() {
   generateWords();
