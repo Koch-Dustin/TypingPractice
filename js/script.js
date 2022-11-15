@@ -1,5 +1,5 @@
 const typingText = document.querySelector(".typing-text p"),
-  inpField = document.querySelector(".design-of-game-boxes .input-field"),
+  inpField = document.querySelector(".game-box .input-field"),
   tryAgainBtn = document.querySelector(".credits-retry button"),
   timeTag = document.querySelector(".time span b"),
   mistakeTag = document.querySelector(".mistake span"),

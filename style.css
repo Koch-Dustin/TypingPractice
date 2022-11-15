@@ -22,7 +22,7 @@ body {
   background: #909090;
 }
 
-.design-of-game-boxes {
+.game-box {
   width: 770px;
   padding: 35px;
   background: #fff;
@@ -30,13 +30,13 @@ body {
   box-shadow: 0 10px 15px rgba(0,0,0,0.05);
 }
 
-.design-of-game-boxes .input-field {
+.game-box .input-field {
   opacity: 0;
   z-index: -999;
   position: absolute;
 }
 
-.design-of-game-boxes .typing-practice-game-container, .design-of-game-boxes .score-container {
+.game-box .typing-practice-game-container, .game-box .score-container {
   padding: 13px 20px 0;
   border-radius: 10px;
   border: 1px solid #bfbfbf;
