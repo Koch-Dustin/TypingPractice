@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <div class="design-of-game-boxes" id="game">
+    <div class="game-box" id="game">
       <input type="text" class="input-field" />
       <div class="typing-practice-game-container">
         <input
@@ -31,12 +31,12 @@
       </div>
     </div>
 
-    <div class="design-of-game-boxes" class="scoreboard" id="scoreboard">
+    <div class="scoreboard" id="scoreboard">
       <div class="score-container">
         <p>Time is up!</p>
         <br />
         <p>Your Total Best</p>
-        <div class="best-score">
+        <div class="overall-best-score">
           <div class="left">Mistakes: <span id="alltime_mistakes">0</span></div>
           <div>WPM: <span id="alltime_wpm">0</span></div>
           <div class="right">CPM: <span id="alltime_cpm">0</span></div>
@@ -44,7 +44,7 @@
         </div>
         <br />
         <p>Your todays Best</p>
-        <div class="best-score">
+        <div class="todays-best-score">
           <div class="left">Mistakes <span id="today_mistakes">0</span></div>
           <div>WPM: <span id="today_wpm">0</span></div>
           <div>CPM: <span id="today_cpm">0</span></div>
@@ -52,7 +52,7 @@
         </div>
         <br />
         <p>Your last play</p>
-        <div class="best-score">
+        <div class="last-play">
           <div class="left">Mistakes: <span id="last_mistakes">0</span></div>
           <div>WPM: <span id="last_wpm">0</span></div>
           <div class="right">CPM: <span id="last_cpm">0</span></div>
