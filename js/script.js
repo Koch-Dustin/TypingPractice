@@ -23,10 +23,12 @@ const typingText = document.querySelector(".typing-text p"),
   lastCpm = document.querySelector("#last_cpm"),
   lastTime = document.querySelector("#last_time"),
   lastScore = document.querySelector("#last_score"),
-  lastAcc = document.querySelector("#last_acc");
-(deleteToday = document.querySelector(".delete-today")),
-  (deleteAlltime = document.querySelector(".delete-alltime"));
-  playAgainButton = document.querySelector(".play-again")
+  lastAcc = document.querySelector("#last_acc"),
+  deleteToday = document.querySelector(".delete-today"),
+  deleteAlltime = document.querySelector(".delete-alltime"),
+  playAgainButton = document.querySelector(".play-again");
+  wordCounter = document.querySelector(".word-count")
+  generateWordButton = document.querySelector(".generate-text-button")
 
 var intervalId;
 let TimeSpendToFinish;
@@ -55,27 +57,16 @@ function loadParagraph() {
 }
 
 deleteToday.addEventListener("click", (e) => {
-  clearTodaysBest()
+  clearTodaysBest();
 });
 
 deleteAlltime.addEventListener("click", (e) => {
-  clearAlltimeBest()
+  clearAlltimeBest();
 });
 
 playAgainButton.addEventListener("click", () => {
   location.reload();
-})
-
-function resetGame() {
-  generateWords();
-  clearInterval(timer);
-  charIndex = mistakes = isTyping = 0;
-  inpField.value = "";
-  timeTag.innerText = timeLeft;
-  wpmTag.innerText = 0;
-  mistakeTag.innerText = 0;
-  cpmTag.innerText = 0;
-}
+});
 
 function toggleGame() {
   if (gamehasended) {
@@ -103,6 +94,9 @@ async function generateWords() {
   clearInterval(intervalId);
   timeSpend = 0;
   firstCharacterTyped = false;
+
+  wordCounter.style.display = "none"
+  generateWordButton.style.display = "none"
 }
 
 let myArray;
@@ -189,7 +183,7 @@ document.addEventListener("keydown", function (e) {
 });
 
 toggleGame();
-tryAgainBtn.addEventListener("click", resetGame);
+tryAgainBtn.addEventListener("click", refreshPage);
 inpField.addEventListener("input", Typing);
 
 //=================================================
@@ -315,7 +309,7 @@ function clearAlltimeBest() {
   localStorage.setItem("alltimeBestAcc", 0);
   localStorage.setItem("alltimeBestMistakes", 0);
   localStorage.setItem("alltimeBestScore", 0);
-  localStorage.setItem("allTimeBestTime", 0)
+  localStorage.setItem("allTimeBestTime", 0);
 
   alltimeWpm.innerText = getScore("alltimeBestWpm");
   alltimeCpm.innerText = getScore("alltimeBestCpm");
@@ -330,6 +324,10 @@ const date1 = today.getDate();
 if (date1 != localStorage.getItem("date")) {
   localStorage.setItem("date", date1);
   clearTodaysBest();
+}
+
+function refreshPage() {
+  location.reload();
 }
 
 setUpScores();
