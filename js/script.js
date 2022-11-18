@@ -186,12 +186,6 @@ toggleGame();
 tryAgainBtn.addEventListener("click", refreshPage);
 inpField.addEventListener("input", Typing);
 
-//=================================================
-//
-// Remake of ScoreSystem & Localstorage
-//
-//=================================================
-
 function setUpScores() {
   if (localStorage.getItem("todaysBestWpm" == null)) {
     localStorage.setItem("todaysBestWpm", 0);
