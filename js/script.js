@@ -1,10 +1,6 @@
-const typingText = document.querySelector(".typing-text p"),
-  inpField = document.querySelector(".game-box .input-field"),
-  tryAgainBtn = document.querySelector(".credits-retry button"),
-  timeTag = document.querySelector(".time span b"),
-  mistakeTag = document.querySelector(".mistake span"),
-  wpmTag = document.querySelector(".wpm span"),
-  cpmTag = document.querySelector(".cpm span"),
+const typingText = document.querySelector("#text-to-write"),
+  inpField = document.querySelector("#input-of-text"),
+  tryAgainBtn = document.querySelector("#try-again-button"),
   gameFrame = document.querySelector("#game"),
   resultFrame = document.querySelector("#scoreboard"),
   alltimeMistake = document.querySelector("#alltime_mistakes"),
@@ -24,37 +20,27 @@ const typingText = document.querySelector(".typing-text p"),
   lastTime = document.querySelector("#last_time"),
   lastScore = document.querySelector("#last_score"),
   lastAcc = document.querySelector("#last_acc"),
-  deleteToday = document.querySelector(".delete-today"),
-  deleteAlltime = document.querySelector(".delete-alltime"),
-  playAgainButton = document.querySelector(".play-again");
-  wordCounter = document.querySelector(".word-count")
-  generateWordButton = document.querySelector(".generate-text-button")
+  deleteToday = document.querySelector("#delete-todays-play"),
+  deleteAlltime = document.querySelector("#delete-alltimes-play"),
+  playAgainButton = document.querySelector("#play-game-again"),
+  wordCounter = document.querySelector("#word-count"),
+  generateWordButton = document.querySelector("#generate-text-button")
 
 var intervalId;
-let TimeSpendToFinish;
-let cpm;
-let netwpm;
-let groswpm;
+let timeSpendToFinish;
+let charactersPerMinute;
+let wordsPerMinuteWithoutMistakes;
+let wordsPerMinuteWithMistakes;
 let mistakes;
 let acc;
 
-let timer,
-  timeSpend = 0;
-charIndex = mistakes = isTyping = 0;
-gamehasended = false;
-firstCharacterTyped = false;
-
-function loadParagraph() {
-  const ranIndex = Math.floor(Math.random() * paragraphs.length);
-  typingText.innerHTML = "";
-  paragraphs[ranIndex].split("").forEach((char) => {
-    let span = `<span>${char}</span>`;
-    typingText.innerHTML += span;
-  });
-  typingText.querySelectorAll("span")[0].classList.add("active");
-  document.addEventListener("keydown", () => inpField.focus());
-  typingText.addEventListener("click", () => inpField.focus());
-}
+let timer;
+let timeSpend = 0;
+let charIndex = 0;
+let isTyping = 0;
+let gamehasended = false;
+mistakes = 0;
+let firstCharacterTyped = false;
 
 deleteToday.addEventListener("click", (e) => {
   clearTodaysBest();
@@ -70,7 +56,6 @@ playAgainButton.addEventListener("click", () => {
 
 function toggleGame() {
   if (gamehasended) {
-    print;
     gameFrame.style.display = "none";
     resultFrame.style.display = "block";
   } else {
@@ -81,14 +66,7 @@ function toggleGame() {
 }
 
 async function generateWords() {
-  fetch(
-    "https://random-word-api.herokuapp.com/word?number=" +
-      document.getElementById("word-count").value
-  )
-    .then((res) => res.json())
-    .then((data) => (output = data.toString().replaceAll(",", " ")))
-    .then((output) => (typingText.innerHTML = output))
-    .then(() => splitWords());
+  getWords();
   typingText.focus();
 
   clearInterval(intervalId);
@@ -99,10 +77,20 @@ async function generateWords() {
   generateWordButton.style.display = "none"
 }
 
-let myArray;
+async function getWords() {
+  fetch(
+    "https://random-word-api.herokuapp.com/word?number=" +
+      document.getElementById("word-count").value
+  )
+    .then((res) => res.json())
+    .then((data) => output = data.toString().replaceAll(",", " "))
+    .then((output) => typingText.innerHTML = output)
+    .then(() => splitWords());
+}
 
 function splitWords() {
   let text = typingText.innerHTML;
+  let myArray;
   typingText.innerHTML = "";
   myArray = text.split("");
   myArray.forEach((span) => {
@@ -111,25 +99,29 @@ function splitWords() {
   });
 }
 
-function Typing() {
-  const characters = typingText.innerText;
-  const typedCharactersNumber = document.getElementsByClassName("test");
-  const numberOfWritenCharacters =
-    document.getElementsByClassName("typed").length;
-  let typedChar = inpField.value.split("")[charIndex];
-  const character = characters[charIndex];
-  const list = typedCharactersNumber[charIndex].classList;
-  const numberOfCorrectCharacters =
-    document.getElementsByClassName("correct").length;
-
+function startTimer() {
   if (firstCharacterTyped == false) {
     firstCharacterTyped = true;
     intervalId = window.setInterval(function () {
       timeSpend++;
     }, 1000);
   }
+}
 
-  if (character === typedChar) {
+function typing() {
+  const characters = typingText.innerText;
+  const typedCharactersNumber = document.getElementsByClassName("test");
+  const numberOfWrittenCharacters =
+    document.getElementsByClassName("typed").length + 1;
+  let typedChar = inpField.value.split("")[charIndex];
+  const character = characters[charIndex];
+  const list = typedCharactersNumber[charIndex].classList;
+  const numberOfCorrectCharacters =
+    document.getElementsByClassName("correct").length;
+
+  startTimer()
+
+  if (character == typedChar) {
     if (typedChar == " ") {
       list.remove("active");
       list.add("correct");
@@ -146,20 +138,16 @@ function Typing() {
   }
 
   charIndex++;
-  if (numberOfWritenCharacters + 1 == characters.length) {
-    TimeSpendToFinish = timeSpend;
-    TimeSpendToFinishInMinutes = TimeSpendToFinish / 60;
-    cpm = Math.round((numberOfWritenCharacters / timeSpend) * 60);
-    groswpm = Math.round(
-      (typedCharactersNumber.length / 5 / TimeSpendToFinish) * 60
+  if (numberOfWrittenCharacters == characters.length) {
+    timeSpendToFinish = timeSpend;
+    timeSpendToFinishInMinutes = timeSpendToFinish / 60;
+    charactersPerMinute = Math.round((numberOfWrittenCharacters / timeSpend) * 60);
+    wordsPerMinuteWithMistakes = Math.round(
+      (typedCharactersNumber.length / 5 / timeSpendToFinish) * 60
     );
-    netwpm =
-      Math.round((numberOfCorrectCharacters / 5 / TimeSpendToFinish) * 60) + 1;
-    acc = Math.round((netwpm / groswpm) * 100);
-    console.log("GrossWpm: " + groswpm);
-    console.log("NetWpm: " + netwpm);
-    console.log("Acc: " + acc);
-    console.log("Mistakes: " + mistakes);
+    wordsPerMinuteWithoutMistakes =
+      Math.round((numberOfCorrectCharacters / 5 / timeSpendToFinish) * 60) + 1;
+    acc = Math.round((wordsPerMinuteWithoutMistakes / wordsPerMinuteWithMistakes) * 100);
 
     document.addEventListener("keydown", (e) => {
       e.preventDefault();
@@ -184,7 +172,7 @@ document.addEventListener("keydown", function (e) {
 
 toggleGame();
 tryAgainBtn.addEventListener("click", refreshPage);
-inpField.addEventListener("input", Typing);
+inpField.addEventListener("input", typing);
 
 function setUpScores() {
   if (localStorage.getItem("todaysBestWpm" == null)) {
@@ -205,14 +193,14 @@ function setUpScores() {
 }
 
 function setLastPlay() {
-  score = Math.round(netwpm + acc);
+  score = Math.round(wordsPerMinuteWithoutMistakes + acc);
 
   lastPlayIsBetterThanTodaysBest = score > getScore("todaysBestScore");
   if (lastPlayIsBetterThanTodaysBest) {
-    localStorage.setItem("todaysBestWpm", netwpm);
+    localStorage.setItem("todaysBestWpm", wordsPerMinuteWithoutMistakes);
     todaysWpm.innerText = getScore("todaysBestWpm");
 
-    localStorage.setItem("todaysBestCpm", cpm);
+    localStorage.setItem("todaysBestCpm", charactersPerMinute);
     todaysCpm.innerText = getScore("todaysBestCpm");
 
     localStorage.setItem("todaysBestAcc", acc);
@@ -221,7 +209,7 @@ function setLastPlay() {
     localStorage.setItem("todaysBestMistakes", mistakes);
     todaysMistake.innerText = getScore("todaysBestMistakes");
 
-    localStorage.setItem("todaysBestTime", TimeSpendToFinish);
+    localStorage.setItem("todaysBestTime", timeSpendToFinish);
     todaysTime.innerText = getScore("todaysBestTime");
 
     localStorage.setItem("todaysBestScore", score);
@@ -229,10 +217,10 @@ function setLastPlay() {
 
   lastPlayIsBetterThanAlltimesBest = score > getScore("alltimeBestScore");
   if (lastPlayIsBetterThanAlltimesBest) {
-    localStorage.setItem("alltimeBestWpm", netwpm);
+    localStorage.setItem("alltimeBestWpm", wordsPerMinuteWithoutMistakes);
     alltimeWpm.innerText = getScore("alltimeBestWpm");
 
-    localStorage.setItem("alltimeBestCpm", cpm);
+    localStorage.setItem("alltimeBestCpm", charactersPerMinute);
     alltimeCpm.innerText = getScore("alltimeBestCpm");
 
     localStorage.setItem("alltimeBestAcc", acc);
@@ -241,19 +229,18 @@ function setLastPlay() {
     localStorage.setItem("alltimeBestMistakes", mistakes);
     alltimeMistake.innerText = getScore("alltimeBestMistakes");
 
-    localStorage.setItem("allTimeBestTime", TimeSpendToFinish);
+    localStorage.setItem("allTimeBestTime", timeSpendToFinish);
     alltimeTime.innerText = getScore("allTimeBestTime");
 
     localStorage.setItem("alltimeBestScore", score);
   }
 
   lastMistake.innerText = mistakes;
-  lastCpm.innerText = cpm;
-  lastWpm.innerText = netwpm;
+  lastCpm.innerText = charactersPerMinute;
+  lastWpm.innerText = wordsPerMinuteWithoutMistakes;
   lastAcc.innerText = acc + "%";
-  lastTime.innerText = TimeSpendToFinish;
+  lastTime.innerText = timeSpendToFinish;
 
-  console.log(score);
 }
 
 function getScore(typeOfBestScore) {
@@ -262,23 +249,15 @@ function getScore(typeOfBestScore) {
 
 function loadStats() {
   alltimeWpm.innerText = getScore("alltimeBestWpm");
-
   alltimeCpm.innerText = getScore("alltimeBestCpm");
-
   alltimeAcc.innerText = getScore("alltimeBestAcc") + "%";
-
   alltimeMistake.innerText = getScore("alltimeBestMistakes");
-
   alltimeTime.innerText = getScore("allTimeBestTime");
-
+  
   todaysWpm.innerText = getScore("todaysBestWpm");
-
   todaysCpm.innerText = getScore("todaysBestCpm");
-
   todaysAcc.innerText = getScore("todaysBestAcc") + "%";
-
   todaysMistake.innerText = getScore("todaysBestMistakes");
-
   todaysTime.innerText = getScore("todaysBestTime");
 }
 
@@ -313,10 +292,10 @@ function clearAlltimeBest() {
 }
 
 const today = new Date();
-const date1 = today.getDate();
+const date = today.getDate();
 
-if (date1 != localStorage.getItem("date")) {
-  localStorage.setItem("date", date1);
+if (date != localStorage.getItem("date")) {
+  localStorage.setItem("date", date);
   clearTodaysBest();
 }
 

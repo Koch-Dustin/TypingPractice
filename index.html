@@ -9,7 +9,7 @@
   </head>
   <body>
     <div class="game-box" id="game">
-      <input type="text" class="input-field" />
+      <input type="text" class="input-field" id="input-of-text"/>
       <div class="typing-practice-game-container">
         <input
           type="number"
@@ -20,13 +20,13 @@
           max="40"
           onKeyDown="return false"
         />
-        <button onclick="generateWords()" class="generate-text-button">Generate</button>
+        <button onclick="generateWords()" class="generate-text-button" id="generate-text-button">Generate</button>
         <div class="typing-text">
           <p id="text-to-write"></p>
         </div>
         <div class="credits-retry">
           <p>TypingPractice Game by Dustin Koch</p>
-          <button>Try Again</button>
+          <button id="try-again-button">Try Again</button>
         </div>
       </div>
     </div>
@@ -62,9 +62,9 @@
           <div>Acc: <span id="last_acc">0</span></div>
         </div>
         <br />
-        <button class="delete-today">Delete Today's Best</button>
-        <button class="delete-alltime">Delete Alltime's Best</button>
-        <button class="play-again">Play again</button>
+        <button class="delete-today" id="delete-todays-play">Delete Today's Best</button>
+        <button class="delete-alltime" id="delete-alltimes-play">Delete Alltime's Best</button>
+        <button class="play-again" id="play-game-again">Play again</button>
         <br />
         <br />
       </div>
