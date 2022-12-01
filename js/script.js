@@ -20,8 +20,7 @@ const typingText = document.getElementById("text-to-write"),
   lastTime = document.getElementById("last_time"),
   lastScore = document.getElementById("last_score"),
   lastAcc = document.getElementById("last_acc"),
-  wordCounter = document.getElementById("word-count"),
-  generateWordButton = document.getElementById("generate-text-button");
+  wordCounter = document.getElementById("word-count");
 
 var intervalId;
 let timeSpendToFinish;
