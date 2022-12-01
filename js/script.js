@@ -50,7 +50,7 @@ function toggleGame() {
 }
 
 async function generateWords() {
-  getWords();
+  await getWords();
   typingText.focus();
 
   clearInterval(intervalId);
