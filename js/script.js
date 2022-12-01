@@ -1,61 +1,45 @@
-const typingText = document.querySelector("#text-to-write"),
-  inpField = document.querySelector("#input-of-text"),
-  tryAgainBtn = document.querySelector("#try-again-button"),
-  gameFrame = document.querySelector("#game"),
-  resultFrame = document.querySelector("#scoreboard"),
-  alltimeMistake = document.querySelector("#alltime_mistakes"),
-  alltimeWpm = document.querySelector("#alltime_wpm"),
-  alltimeCpm = document.querySelector("#alltime_cpm"),
-  alltimeTime = document.querySelector("#alltime_time"),
-  alltimeAcc = document.querySelector("#alltime_acc"),
-  todaysMistake = document.querySelector("#today_mistakes"),
-  todaysWpm = document.querySelector("#today_wpm"),
-  todaysCpm = document.querySelector("#today_cpm"),
-  todaysTime = document.querySelector("#today_time"),
-  todaysScore = document.querySelector("#today_score"),
-  todaysAcc = document.querySelector("#today_acc"),
-  lastMistake = document.querySelector("#last_mistakes"),
-  lastWpm = document.querySelector("#last_wpm"),
-  lastCpm = document.querySelector("#last_cpm"),
-  lastTime = document.querySelector("#last_time"),
-  lastScore = document.querySelector("#last_score"),
-  lastAcc = document.querySelector("#last_acc"),
-  deleteToday = document.querySelector("#delete-todays-play"),
-  deleteAlltime = document.querySelector("#delete-alltimes-play"),
-  playAgainButton = document.querySelector("#play-game-again"),
-  wordCounter = document.querySelector("#word-count"),
-  generateWordButton = document.querySelector("#generate-text-button")
+const typingText = document.getElementById("text-to-write"),
+  inpField = document.getElementById("input-of-text"),
+  tryAgainBtn = document.getElementById("try-again-button"),
+  gameFrame = document.getElementById("game"),
+  resultFrame = document.getElementById("scoreboard"),
+  alltimeMistake = document.getElementById("alltime_mistakes"),
+  alltimeWpm = document.getElementById("alltime_wpm"),
+  alltimeCpm = document.getElementById("alltime_cpm"),
+  alltimeTime = document.getElementById("alltime_time"),
+  alltimeAcc = document.getElementById("alltime_acc"),
+  todaysMistake = document.getElementById("today_mistakes"),
+  todaysWpm = document.getElementById("today_wpm"),
+  todaysCpm = document.getElementById("today_cpm"),
+  todaysTime = document.getElementById("today_time"),
+  todaysScore = document.getElementById("today_score"),
+  todaysAcc = document.getElementById("today_acc"),
+  lastMistake = document.getElementById("last_mistakes"),
+  lastWpm = document.getElementById("last_wpm"),
+  lastCpm = document.getElementById("last_cpm"),
+  lastTime = document.getElementById("last_time"),
+  lastScore = document.getElementById("last_score"),
+  lastAcc = document.getElementById("last_acc"),
+  wordCounter = document.getElementById("word-count"),
+  generateWordButton = document.getElementById("generate-text-button");
 
 var intervalId;
 let timeSpendToFinish;
 let charactersPerMinute;
 let wordsPerMinuteWithoutMistakes;
 let wordsPerMinuteWithMistakes;
-let mistakes;
+let mistakes = 0;
 let acc;
 
 let timer;
 let timeSpend = 0;
 let charIndex = 0;
 let isTyping = 0;
-let gamehasended = false;
-mistakes = 0;
+let gameHasended = false;
 let firstCharacterTyped = false;
 
-deleteToday.addEventListener("click", (e) => {
-  clearTodaysBest();
-});
-
-deleteAlltime.addEventListener("click", (e) => {
-  clearAlltimeBest();
-});
-
-playAgainButton.addEventListener("click", () => {
-  location.reload();
-});
-
 function toggleGame() {
-  if (gamehasended) {
+  if (gameHasended) {
     gameFrame.style.display = "none";
     resultFrame.style.display = "block";
   } else {
@@ -73,8 +57,8 @@ async function generateWords() {
   timeSpend = 0;
   firstCharacterTyped = false;
 
-  wordCounter.style.display = "none"
-  generateWordButton.style.display = "none"
+  wordCounter.style.display = "none";
+  generateWordButton.style.display = "none";
 }
 
 async function getWords() {
@@ -83,8 +67,8 @@ async function getWords() {
       document.getElementById("word-count").value
   )
     .then((res) => res.json())
-    .then((data) => output = data.toString().replaceAll(",", " "))
-    .then((output) => typingText.innerHTML = output)
+    .then((data) => (output = data.toString().replaceAll(",", " ")))
+    .then((output) => (typingText.innerHTML = output))
     .then(() => splitWords());
 }
 
@@ -119,7 +103,7 @@ function typing() {
   const numberOfCorrectCharacters =
     document.getElementsByClassName("correct").length;
 
-  startTimer()
+  startTimer();
 
   if (character == typedChar) {
     if (typedChar == " ") {
@@ -141,19 +125,23 @@ function typing() {
   if (numberOfWrittenCharacters == characters.length) {
     timeSpendToFinish = timeSpend;
     timeSpendToFinishInMinutes = timeSpendToFinish / 60;
-    charactersPerMinute = Math.round((numberOfWrittenCharacters / timeSpend) * 60);
+    charactersPerMinute = Math.round(
+      (numberOfWrittenCharacters / timeSpend) * 60
+    );
     wordsPerMinuteWithMistakes = Math.round(
       (typedCharactersNumber.length / 5 / timeSpendToFinish) * 60
     );
     wordsPerMinuteWithoutMistakes =
       Math.round((numberOfCorrectCharacters / 5 / timeSpendToFinish) * 60) + 1;
-    acc = Math.round((wordsPerMinuteWithoutMistakes / wordsPerMinuteWithMistakes) * 100);
+    acc = Math.round(
+      (wordsPerMinuteWithoutMistakes / wordsPerMinuteWithMistakes) * 100
+    );
 
     document.addEventListener("keydown", (e) => {
       e.preventDefault();
     });
 
-    gamehasended = true;
+    gameHasended = true;
     toggleGame();
     setLastPlay();
 
@@ -240,7 +228,6 @@ function setLastPlay() {
   lastWpm.innerText = wordsPerMinuteWithoutMistakes;
   lastAcc.innerText = acc + "%";
   lastTime.innerText = timeSpendToFinish;
-
 }
 
 function getScore(typeOfBestScore) {
@@ -253,7 +240,7 @@ function loadStats() {
   alltimeAcc.innerText = getScore("alltimeBestAcc") + "%";
   alltimeMistake.innerText = getScore("alltimeBestMistakes");
   alltimeTime.innerText = getScore("allTimeBestTime");
-  
+
   todaysWpm.innerText = getScore("todaysBestWpm");
   todaysCpm.innerText = getScore("todaysBestCpm");
   todaysAcc.innerText = getScore("todaysBestAcc") + "%";
