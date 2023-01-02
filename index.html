@@ -6,6 +6,7 @@
     <title>TypingPractice</title>
     <link rel="stylesheet" href="style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   </head>
   <body>
     <div class="game-box" id="game">
@@ -47,7 +48,7 @@
           <div>WPM: <span id="alltime_wpm">0</span></div>
           <div>CPM: <span id="alltime_cpm">0</span></div>
           <div>Time: <span id="alltime_time">0</span></div>
-          <div>Acc: <span id="alltime_acc">0</span></div>
+          <div>Acc: <span id="alltime_accuracy">0</span></div>
         </div>
         <br />
         <p>Your todays Best</p>
@@ -56,7 +57,7 @@
           <div>WPM: <span id="today_wpm">0</span></div>
           <div>CPM: <span id="today_cpm">0</span></div>
           <div>Time: <span id="today_time">0</span></div>
-          <div>Acc: <span id="today_acc">0</span></div>
+          <div>Acc: <span id="today_accuracy">0</span></div>
         </div>
         <br />
         <p>Your last play</p>
@@ -65,7 +66,7 @@
           <div>WPM: <span id="last_wpm">0</span></div>
           <div>CPM: <span id="last_cpm">0</span></div>
           <div>Time: <span id="last_time">0</span></div>
-          <div>Acc: <span id="last_acc">0</span></div>
+          <div>Acc: <span id="last_accuracy">0</span></div>
         </div>
         <br />
         <button class="delete-today" id="delete-todays-play">
@@ -83,5 +84,6 @@
     <script src="js/script.js"></script>
     <script src="js/buttonEvents.js"></script>
     <script src="js/generateWords.js"></script>
+    <script src="js/scorehandler.js"></script>
   </body>
 </html>

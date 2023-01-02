@@ -1,9 +1,8 @@
-const typingText = document.getElementById("text-to-write");
 const generateWordButton = document.getElementById("generate-text-button");
 
 async function generateWords() {
   await getWords();
-  typingText.focus();
+  textToWrite.focus();
 
   clearInterval(intervalId);
   timeSpend = 0;
@@ -14,12 +13,13 @@ async function generateWords() {
 }
 
 async function getWords() {
-  fetch(
+  const url =
     "https://random-word-api.herokuapp.com/word?number=" +
-      document.getElementById("word-count").value
-  )
-    .then((res) => res.json())
-    .then((data) => (output = data.toString().replaceAll(",", " ")))
-    .then((output) => (typingText.innerHTML = output))
-    .then(() => splitWords());
+    document.getElementById("word-count").value;
+
+  const res = await fetch(url);
+  const data = await res.json();
+  const output = await data.toString().replaceAll(",", " ");
+  textToWrite.innerHTML = await output;
+  splitWords();
 }
