@@ -14,7 +14,7 @@ async function generateWords() {
 
 async function getWords() {
   const url =
-    "https://random-word-api.herokuapp.com/word?number=" +
+    "https://localhost:7026/API?counter=" +
     document.getElementById("word-count").value;
 
   const res = await fetch(url);

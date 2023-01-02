@@ -44,17 +44,6 @@ async function generateWords() {
   $(generateWordButton).hide();
 }
 
-async function getWords() {
-  fetch(
-    "https://random-word-api.herokuapp.com/word?number=" +
-      document.getElementById("word-count").value
-  )
-    .then((res) => res.json())
-    .then((data) => (output = data.toString().replaceAll(",", " ")))
-    .then((output) => (textToWrite.innerHTML = output))
-    .then(() => splitWords());
-}
-
 function splitWords() {
   let text = textToWrite.innerHTML;
   let myArray;
